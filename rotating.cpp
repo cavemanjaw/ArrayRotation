@@ -21,20 +21,52 @@
 // 4 bits for each pixel
 //unsigned or signed, decide type for bitmap
 
-
+//Type defines
 #define U16 short unsigned
-#define BITS_PER_BYTE
+#define U32 unsigned int
+
+#define BITS_PER_BYTE 8
+#define BITS_PER_WORD 32
 
 //Bits per entry must fulfill 16 % bitsPerEntry = 0 
 //TODO: Add padding somehow
 //TODO: Investigate fulling, accesing and possibility of elastic handling
 
 //For division x/y it is q = (x + y - 1) / y;
-U16* AllocateBitArray(int bitsPerEntry, int matrixSize)
+U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 {	
 	//take the celing of this to malloc
 	const int bitsAmount = bitsPerEntry * matrixSize * matrixSize;
-	U16* outputArray = (U16*)malloc((bitsAmount + BITS_PER_BYTE - 1) / BITS_PER_BYTE);
+	
+	//What to do with the remaining bits? This will allocate a byte and not all bits will be always used?
+	//Invstigate
+	U32* outputArray = (U16*)malloc((bitsAmount + BITS_PER_BYTE - 1) / BITS_PER_BYTE);
+	return outputArray;
+}
+
+//Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
+U32 AccessBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
+{
+//calculate the position in array
+//nieee
+const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
+const int wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
+const int entryPositionInArray = ((row * arraySize) + column);
+const int entryPositionOffset = entryPositionInArray % wordPositionInArray;
+
+U32 arrayElementContainingEntry;
+U32 entry;
+
+//TODO: Investigate the corectness of it!
+arrayElementContainingEntry = array[positionInArray];
+//entry = arrayElementContainingEntry // right bitshift for getting the value
+//must be masking also
+
+//then, calculate the bit shift for certainn value
+//Will it be positionInArray 
+
+//store it in U32 and return
+
 }
 
 //allocate integral multiplicity of sizeof(U16)
