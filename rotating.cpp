@@ -49,9 +49,20 @@ U32 AccessBitArrayElement(U32* array, int row, int column, int arraySize, int bi
 {
 //calculate the position in array
 //nieee
+
+//Works only for power of two bitsPerEntry values
 const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
-const int wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
+
+//Take the ceiling to be correct
+//It is the ceiling of (((row * arraySize) + column) / amountOfEntriesPerWord)
+//Incorrect, eight element is in 3rd word
+const int wordPositionInArray = (((row * arraySize) + column) + amountOfEntriesPerWord - 1) / amountOfEntriesPerWord;
 const int entryPositionInArray = ((row * arraySize) + column);
+
+//What of the offset exactly?
+//TODO: FIx this, it is incorrect
+//Should bee (entryPositionInArray - wordPositionInArray * bitsPerEntry)
+//For accesing n-th element in m-th word, starting counting from zero
 const int entryPositionOffset = entryPositionInArray % wordPositionInArray;
 
 U32 arrayElementContainingEntry;
