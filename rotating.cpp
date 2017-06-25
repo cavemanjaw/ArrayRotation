@@ -56,28 +56,39 @@ const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
 //Take the ceiling to be correct
 //It is the ceiling of (((row * arraySize) + column) / amountOfEntriesPerWord)
 //Incorrect, eight element is in 3rd word
-const int wordPositionInArray = (((row * arraySize) + column) + amountOfEntriesPerWord - 1) / amountOfEntriesPerWord;
+//Do not take the ceiling!
+const int wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
 const int entryPositionInArray = ((row * arraySize) + column);
 
 //What of the offset exactly?
 //TODO: FIx this, it is incorrect
 //Should bee (entryPositionInArray - wordPositionInArray * bitsPerEntry)
 //For accesing n-th element in m-th word, starting counting from zero
-const int entryPositionOffset = entryPositionInArray % wordPositionInArray;
+//entryPositionOffset is elementIndexInWord!
+const int entryPositionOffset = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
 
 U32 arrayElementContainingEntry;
 U32 entry;
 
 //TODO: Investigate the corectness of it!
-arrayElementContainingEntry = array[positionInArray];
+arrayElementContainingEntry = array[entryPositionInArray];
 //entry = arrayElementContainingEntry // right bitshift for getting the value
 //must be masking also
 
 //then, calculate the bit shift for certainn value
 //Will it be positionInArray 
+entry = GetValueFromWord(arrayElementContainingEntry, entryPositionOffset, bitsPerEntry);
+return entry;
 
 //store it in U32 and return
 
+}
+
+//Instead of bitsToShift put offset here
+U32 GetValueFromWord(U32 word, int elementIndexInWord, int bitsPerEntry)
+{
+	const int bitsToShift = ((BITS_PER_WORD / bitsPerEntry) - 1 - elementIndexInWord) * bitsPerEntry;
+	return word >> bitsToShift & (U32)(2 ^ bitsPerEntry - 1); //here ma byc maska
 }
 
 //allocate integral multiplicity of sizeof(U16)
