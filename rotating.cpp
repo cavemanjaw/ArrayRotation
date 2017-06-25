@@ -47,48 +47,35 @@ U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 //Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
 U32 AccessBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
 {
-//calculate the position in array
-//nieee
-
 //Works only for power of two bitsPerEntry values
 const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
 
-//Take the ceiling to be correct
-//It is the ceiling of (((row * arraySize) + column) / amountOfEntriesPerWord)
-//Incorrect, eight element is in 3rd word
-//Do not take the ceiling!
+//The position of word containing entry in continuously allocated bit array
 const int wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
+
+//The position of actual entry, starting from zero, independent of word that stores the entry
 const int entryPositionInArray = ((row * arraySize) + column);
 
-//What of the offset exactly?
-//TODO: FIx this, it is incorrect
-//Should bee (entryPositionInArray - wordPositionInArray * bitsPerEntry)
-//For accesing n-th element in m-th word, starting counting from zero
-//entryPositionOffset is elementIndexInWord!
+//Relative position of entry in certain word, starting from zero, max index depends on bitsPerEnry
 const int entryPositionOffset = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
 
 U32 arrayElementContainingEntry;
 U32 entry;
 
-//TODO: Investigate the corectness of it!
 arrayElementContainingEntry = array[entryPositionInArray];
-//entry = arrayElementContainingEntry // right bitshift for getting the value
-//must be masking also
-
-//then, calculate the bit shift for certainn value
-//Will it be positionInArray 
 entry = GetValueFromWord(arrayElementContainingEntry, entryPositionOffset, bitsPerEntry);
+
 return entry;
-
-//store it in U32 and return
-
 }
 
 //Instead of bitsToShift put offset here
 U32 GetValueFromWord(U32 word, int elementIndexInWord, int bitsPerEntry)
 {
+	//Bits to shift depend on element index and bitsPerEnty value, there is max shift to right in U32 word
 	const int bitsToShift = ((BITS_PER_WORD / bitsPerEntry) - 1 - elementIndexInWord) * bitsPerEntry;
-	return word >> bitsToShift & (U32)(2 ^ bitsPerEntry - 1); //here ma byc maska
+
+	//Return the bits of entry, they are located from the right, not used bits will be zeroes, since the mask
+	return word >> bitsToShift & (U32)(2 ^ bitsPerEntry - 1); //Mask for returned bits, bits that are not the part of entry will be clear
 }
 
 //allocate integral multiplicity of sizeof(U16)
