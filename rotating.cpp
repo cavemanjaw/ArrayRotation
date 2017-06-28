@@ -45,7 +45,7 @@ U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 }
 
 //Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
-U32 AccessBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
+U32 GetBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
 {
 //Works only for power of two bitsPerEntry values
 const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
@@ -87,7 +87,7 @@ void SetValueToWord(U32* word, U32 valueToSet, int bitsPerEntry, int positionOfE
 	//Clear the bits corresponding to occupied in  new entry in passed by pointer word variable
 	*word &= ~(((2 ^ bitsPerEntry - 1) << bitsPerEntry));
 
-	//Make logical "or" operation to merge bits of valueToSet moved to the right place with the rest of bits of word, that won't be modified
+	//Make bitwise "or" operation to merge bits of valueToSet moved to the right place with the rest of bits of word, that won't be modified
 	*word |= valueToSet;
 }
 
