@@ -32,6 +32,15 @@
 //TODO: Add padding somehow
 //TODO: Investigate fulling, accesing and possibility of elastic handling
 
+U32* RandomCreateBitArray(int bitsPerEntry, int matrixSize)
+{
+	U32* array = AllocateBitArray(bitsPerEntry, matrixSize);
+	//TODO: Write the actual body of function
+	//There is a possibility of usage of the malloc argument from AllocateBitArray to determine the number of U32 used for array
+
+	return array;
+}
+
 //For division x/y it is q = (x + y - 1) / y;
 U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 {	
@@ -40,7 +49,7 @@ U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 	
 	//What to do with the remaining bits? This will allocate a byte and not all bits will be always used?
 	//Invstigate
-	U32* outputArray = (U16*)malloc((bitsAmount + BITS_PER_BYTE - 1) / BITS_PER_BYTE);
+	U32* outputArray = (U32*)malloc((bitsAmount + BITS_PER_BYTE - 1) / BITS_PER_BYTE);
 	return outputArray;
 }
 
