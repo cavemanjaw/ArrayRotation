@@ -78,6 +78,19 @@ U32 GetValueFromWord(U32 word, int elementIndexInWord, int bitsPerEntry)
 	return word >> bitsToShift & (U32)(2 ^ bitsPerEntry - 1); //Mask for returned bits, bits that are not the part of entry will be clear
 }
 
+//Function declared as void for now, could be extended to bool for checking if the setting of value was correct
+void SetValueToWord(U32* word, U32 valueToSet, int bitsPerEntry, int positionOfEntryInWord)
+{
+	//Get bits in valueToSet in the right place in U32 word
+	valueToSet <<= bitsPerEntry * ((BITS_PER_WORD / bitsPerEntry - 1) - positionOfEntryInWord);
+	
+	//Clear the bits corresponding to occupied in  new entry in passed by pointer word variable
+	*word &= ~(((2 ^ bitsPerEntry - 1) << bitsPerEntry));
+
+	//Make logical "or" operation to merge bits of valueToSet moved to the right place with the rest of bits of word, that won't be modified
+	*word |= valueToSet;
+}
+
 //allocate integral multiplicity of sizeof(U16)
 
 int* RandomCreateArrayOneChunk(int arraySize)
