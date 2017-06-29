@@ -97,6 +97,10 @@ U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 	return outputArray;
 }
 
+
+//Something - start doing it xD
+//U32* Rotate90BitArray(const U32* inputArray, 
+
 //Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
 U32 GetBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
 {
