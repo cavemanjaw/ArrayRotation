@@ -35,10 +35,38 @@
 U32* RandomCreateBitArray(int bitsPerEntry, int matrixSize)
 {
 	U32* array = AllocateBitArray(bitsPerEntry, matrixSize);
-	//TODO: Write the actual body of function
+
+	const int bitsAmount = bitsPerEntry * matrixSize * matrixSize;
+	const int wordsAmount = (bitsAmount + BITS_PER_BYTE - 1) / BITS_PER_BYTE;
+	
+	for (int i = 0; i < wordsAmount; ++i)
+	{
+		array[i] = rand();
+	}
+
 	//There is a possibility of usage of the malloc argument from AllocateBitArray to determine the number of U32 used for array
 
 	return array;
+}
+
+void PrintBitsOfWord(U32& word, int bitsAmount)
+{
+	for (int i = 0; i < bitsAmount; ++i)
+	{
+		if (word & 1U << i)
+		{
+			std::cout << "1";
+		} 
+		else
+		{
+			std::cout << "0";
+		}
+	}
+}
+
+void PrintBitArray(U32* array, int bitsPerEntry, int matrixSize)
+{
+	//What do we want to display? Bits? Or value interpreted by bits?
 }
 
 //For division x/y it is q = (x + y - 1) / y;
