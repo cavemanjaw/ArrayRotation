@@ -66,7 +66,23 @@ void PrintBitsOfWord(U32& word, int bitsAmount)
 
 void PrintBitArray(U32* array, int bitsPerEntry, int matrixSize)
 {
+	//Iterate over words and then over the entries or just over entries?
+	//For every entry - get entry, invoke PrintsBitsOfWord aso
 	//What do we want to display? Bits? Or value interpreted by bits?
+	
+	const int numOfEntries = matrixSize * matrixSize;
+	
+	for (int row = 0; row < matrixSize; ++row)
+	{
+		for (int column = 0; column < matrixSize; ++column)
+		{	
+			//r-value reference needed?
+			PrintBitsOfWord(
+				GerBitArrayElement(array, row, column, matrixSize, bitsPerEntry), bitsPerEntry);
+			std::cout << " ";
+		}
+		std::endl;
+	}		
 }
 
 //For division x/y it is q = (x + y - 1) / y;
