@@ -104,23 +104,23 @@ U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 //Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
 U32 GetBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
 {
-//Works only for power of two bitsPerEntry values
-const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
+	//Works only for power of two bitsPerEntry values
+	const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
 
-//The position of word containing entry in continuously allocated bit array
-const int wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
+	//The position of word containing entry in continuously allocated bit array
+	const int wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
 
-//The position of actual entry, starting from zero, independent of word that stores the entry
-const int entryPositionInArray = ((row * arraySize) + column);
+	//The position of actual entry, starting from zero, independent of word that stores the entry
+	const int entryPositionInArray = ((row * arraySize) + column);
 
-//Relative position of entry in certain word, starting from zero, max index depends on bitsPerEnry
-const int entryPositionOffset = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
+	//Relative position of entry in certain word, starting from zero, max index depends on bitsPerEnry
+	const int entryPositionOffset = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
 
-U32 arrayElementContainingEntry;
-U32 entry;
+	U32 arrayElementContainingEntry;
+	U32 entry;
 
-arrayElementContainingEntry = array[entryPositionInArray];
-entry = GetValueFromWord(arrayElementContainingEntry, entryPositionOffset, bitsPerEntry);
+	arrayElementContainingEntry = array[entryPositionInArray];
+	entry = GetValueFromWord(arrayElementContainingEntry, entryPositionOffset, bitsPerEntry);
 
 return entry;
 }
