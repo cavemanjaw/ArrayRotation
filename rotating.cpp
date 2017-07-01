@@ -1,15 +1,3 @@
-// reverse array
-//1. In form of table of pointers, allocate memory
-//2. In form of continuously allocated chunk of memory
-//3. Return a poniter to new array
-//4. Modify array
-//5. Array on stack?
-//6. Wyci¹gn¹æ z tegom bity
-//7. Rozbudowaæ interfejs o mo¿liwoœæ obrotu w dowoln¹ stronê
-
-//TODO There is a bug, most probebly in function responsible for rotating array allocated in one chunk
-//RESOLVED Printing was off
-
 #include <stdlib.h>
 #include <iostream>
 #include <time.h> 
