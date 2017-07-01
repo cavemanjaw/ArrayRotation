@@ -2,6 +2,7 @@
 #include <iostream>
 #include <time.h> 
 #include <string.h>
+#include "rotating.h"
 
 //TODO
 
@@ -10,11 +11,7 @@
 //unsigned or signed, decide type for bitmap
 
 //Type defines
-#define U16 short unsigned
-#define U32 unsigned int
 
-#define BITS_PER_BYTE 8
-#define BITS_PER_WORD 32
 
 //Bits per entry must fulfill 16 % bitsPerEntry = 0 
 //TODO: Add padding somehow
@@ -37,7 +34,7 @@ U32* RandomCreateBitArray(int bitsPerEntry, int matrixSize)
 	return array;
 }
 
-void PrintBitsOfWord(U32& word, int bitsAmount)
+void PrintBitsOfWord(const U32& word, int bitsAmount)
 {
 	for (int i = 0; i < bitsAmount; ++i)
 	{
@@ -66,10 +63,10 @@ void PrintBitArray(U32* array, int bitsPerEntry, int matrixSize)
 		{	
 			//r-value reference needed?
 			PrintBitsOfWord(
-				GerBitArrayElement(array, row, column, matrixSize, bitsPerEntry), bitsPerEntry);
+				GetBitArrayElement(array, row, column, matrixSize, bitsPerEntry), bitsPerEntry);
 			std::cout << " ";
 		}
-		std::endl;
+		std::cout << std::endl;
 	}		
 }
 
