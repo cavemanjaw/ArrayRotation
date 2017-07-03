@@ -93,9 +93,32 @@ U32* Rotate90BitArray(const U32* inputArray, const int matrixSize, const int bit
 	{
 		for (int column = 0; column < matrixSize; ++column)
 		{
-		
-		//Use SetValueToWord here	
-		//Do we need a function for returning reference or a pointer to word?
+			U32* processedWord;
+			processedWord = GetBitArrayWord(outputArray, row, column, bitsPerEntry);
+			
+			U32 valueToSet;
+			
+			//Arguments of GetBitArrayElement() are swapped for the 90 degrees rotation according to
+			//the following formula "outputArray[i][j] = inputArray[j][arraySize - i - 1];"
+			valueToSet = GetBitArrayElement(inputArray, column, (matrixSize - row - 1), matrixSize, bitsPerEntry);
+
+			//Calculation of positionOfEntryInWord, pretty redundant, so:
+			//TODO: Move basic calculations, such as calculation the offset of entry in word, to a separate function
+
+			//Works only for power of two bitsPerEntry values
+			const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
+
+			//The position of word containing entry in continuously allocated bit array
+			const int wordPositionInArray = ((row * matrixSize) + column) / amountOfEntriesPerWord;
+
+			//The position of actual entry, starting from zero, independent of word that stores the entry
+			const int entryPositionInArray = ((row * matrixSize) + column);
+
+			//Relative position of entry in certain word, starting from zero, max index depends on bitsPerEnry
+			const int entryPositionOffset = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
+			
+			//Setting value to the outputArray element	
+			SetValueToWord(processedWord, valueToSet, bitsPerEntry, entryPositionOffset);
 		}
 	}
 	

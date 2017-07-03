@@ -24,6 +24,7 @@ void PrintArray(int** inputArray, int arraySize);
 int** Rotate90Array(int** inputArray, int arraySize);
 int* Rotate90ArrayOneChunk(int* inputArray, int arraySize);
 int** Rotate90ArrayModify(int** inputArray, int arraySize);
+U32 GetBitArrayWord(U32* array, int row, int column, int arraySize, int bitsPerEntry);
 //Struct tempate?
 //Think it is impossible, you can overload only on type 
 //Another way is to use a function version, which can shift the bits certain amount, thus providing pseudo-variable-size bitfrlds over int or other type
