@@ -84,7 +84,24 @@ U32* AllocateBitArray(int bitsPerEntry, int matrixSize)
 
 
 //Something - start doing it xD
-//U32* Rotate90BitArray(const U32* inputArray, 
+U32* Rotate90BitArray(const U32* inputArray, const int matrixSize, const int bitsPerEntry)
+{
+	//Returned pointer to newly allocated array, which will be rotated in this function
+	U32* outputArray = AllocateBitArray(bitsPerEntry, matrixSize);
+	
+	for (int row = 0; row < matrixSize; ++row)
+	{
+		for (int column = 0; column < matrixSize; ++column)
+		{
+		
+		//Use SetValueToWord here	
+		//Do we need a function for returning reference or a pointer to word?
+		}
+	}
+	
+	//
+	return outputArray;
+}
 
 //Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
 U32 GetBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
@@ -108,6 +125,27 @@ U32 GetBitArrayElement(U32* array, int row, int column, int arraySize, int bitsP
 	entry = GetValueFromWord(arrayElementContainingEntry, entryPositionOffset, bitsPerEntry);
 
 return entry;
+}
+
+U32* GetBitArrayWord(U32* array, int row, int column, int arraySize, int bitsPerEntry)
+{
+	//TODO: This computation are redundant GetBitArrayWord() and GetBitArrayElement() are using almost the same logic
+	//TODO: They differ only at the point of returned value, since this cannot be overloaded, the redundant part can be moved
+	//      to some other function
+	
+	//Works only for power of two bitsPerEntry values
+	const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
+
+	//The position of word containing entry in continuously allocated bit array
+	const int wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
+
+	//The position of actual entry, starting from zero, independent of word that stores the entry
+	const int entryPositionInArray = ((row * arraySize) + column);
+
+	//Relative position of entry in certain word, starting from zero, max index depends on bitsPerEnry
+	const int entryPositionOffset = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
+
+	return &array[entryPositionInArray];
 }
 
 //Instead of bitsToShift put offset here
