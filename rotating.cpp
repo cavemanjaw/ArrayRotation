@@ -126,6 +126,26 @@ U32* Rotate90BitArray(const U32* inputArray, const int matrixSize, const int bit
 	return outputArray;
 }
 
+
+BitArrayEntryInfo CalculateBitArrayEntryInfo(int bitsPerEntry, int row, int column, int arraySize)
+{
+	BitArrayEntryInfo entryInfo;
+
+	//Works only for power of two bitsPerEntry values
+	entryInfo.amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
+
+	//The position of word containing entry in continuously allocated bit array
+	entryInfo.wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
+
+	//The position of actual entry, starting from zero, independent of word that stores the entry
+	entryInfo.entryPositionInArray = ((row * arraySize) + column);
+
+	//Relative position of entry in certain word, starting from zero, max index depends on bitsPerEnry
+	entryInfo.entryPositionInWord = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
+
+	return entryInfo;
+}
+
 //Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
 U32 GetBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
 {

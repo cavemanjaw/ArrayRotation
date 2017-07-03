@@ -8,6 +8,16 @@
 #define BITS_PER_BYTE 8
 #define BITS_PER_WORD 32
 
+// Struct declarations
+struct BitArrayEntryInfo
+{
+	int amountOfEntriesPerWord;
+	int wordPositionInArray;
+	int entryPositionInArray;
+	int entryPositionInWord;
+}
+
+
 // Function declarations
 
 U32* RandomCreateBitArray(int bitsPerEntry, int matrixSize);
