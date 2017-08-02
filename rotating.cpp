@@ -94,7 +94,7 @@ U32* Rotate90BitArray(const U32* inputArray, const int matrixSize, const int bit
 		for (int column = 0; column < matrixSize; ++column)
 		{
 			U32* processedWord;
-			processedWord = GetBitArrayWord(outputArray, row, column, bitsPerEntry);
+			processedWord = GetBitArrayWord(outputArray, row, column, matrixSize, bitsPerEntry);
 			
 			U32 valueToSet;
 			
@@ -135,19 +135,19 @@ BitArrayEntryInfo CalculateBitArrayEntryInfo(int bitsPerEntry, int row, int colu
 	entryInfo.amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
 
 	//The position of word containing entry in continuously allocated bit array
-	entryInfo.wordPositionInArray = ((row * arraySize) + column) / amountOfEntriesPerWord;
+	entryInfo.wordPositionInArray = ((row * arraySize) + column) / entryInfo.amountOfEntriesPerWord;
 
 	//The position of actual entry, starting from zero, independent of word that stores the entry
 	entryInfo.entryPositionInArray = ((row * arraySize) + column);
 
 	//Relative position of entry in certain word, starting from zero, max index depends on bitsPerEnry
-	entryInfo.entryPositionInWord = entryPositionInArray - (wordPositionInArray * bitsPerEntry);
+	entryInfo.entryPositionInWord = entryInfo.entryPositionInArray - (entryInfo.wordPositionInArray * bitsPerEntry);
 
 	return entryInfo;
 }
 
 //Is arraySize really needed? Or it is necesssary only for restricting out-of-bound array access?
-U32 GetBitArrayElement(U32* array, int row, int column, int arraySize, int bitsPerEntry)
+U32 GetBitArrayElement(const U32* array, int row, int column, int arraySize, int bitsPerEntry)
 {
 	//Works only for power of two bitsPerEntry values
 	const int amountOfEntriesPerWord = BITS_PER_WORD / bitsPerEntry;
@@ -380,5 +380,19 @@ int main()
 
 	PrintArrayOneChunk(arrayOneChunkRotated, arraySize);
 
+	std::cout << "*****************************" << std::endl;
+	std::cout << "Bit array" << std::endl;
+	std::cout << std::endl;
+
+	//Bit Array
+
+	U32* bitArray = RandomCreateBitArray(4, 5);
+	PrintBitArray(bitArray, 4, 5);
+
+	std::cout << std::endl;
+
+	Rotate90BitArray(bitArray, 5, 4);
+
+	PrintBitArray(bitArray, 4, 5);
 	return 0; 
 }
